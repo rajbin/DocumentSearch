@@ -1,4 +1,6 @@
 import os
+#Regular expression
+import re
 
 class DocumentSearch(object):
     """Read the document file and search word within in the documents"""
@@ -10,7 +12,7 @@ class DocumentSearch(object):
 
     # document location
     __currentDirectory = os.path.dirname(__file__)
-    __virtualFilePath = "Uploads/docs2.txt"
+    __virtualFilePath = "Uploads/ap_docs.txt" #"Uploads/docs2.txt"
     __filePath = os.path.join(__currentDirectory, __virtualFilePath)
     fileReadMode = "r"
 
@@ -44,7 +46,7 @@ class DocumentSearch(object):
     def __searchForWordInDocument(self, searchText):
         self.readFile()        
         for index in range(len(self._lstContent)):
-            if str(self._lstContent[index]).lower().find(str(searchText).lower()) > -1:                
+            if re.search("\\b" + searchText + "\\b", self._lstContent[index], re.IGNORECASE) != None:
                 #assign multiple values to a key in a dictionary
                 self._dictTextInDocumentNo.setdefault(searchText, []).append(index)
         return self._dictTextInDocumentNo

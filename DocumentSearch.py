@@ -6,8 +6,6 @@ class DocumentSearch(object):
     """Read the document file and search word within in the documents"""
 
     _lstContent = []
-    # append empty string at 0 index so that document number starts from 1
-    #_lstContent.append("")
     _dictTextInDocumentNo = {}
 
     # document location
@@ -54,10 +52,15 @@ class DocumentSearch(object):
     def readFile(self):
         try:
             with open(self.__filePath, self.fileReadMode) as doc:
-                content = doc.read()
+                content = doc.read().strip()
                 self._lstContent = content.split("<NEW DOCUMENT>")
                 # remove empty strings from the list
-                self._lstContent = filter(None, self._lstContent)
+                #self._lstContent = filter(None, self._lstContent)
+
+                #insert empty string at 0 index so that document number does not require index manipulation while retrieving it
+                if self._lstContent[0] != "":
+                    self._lstContent.insert(0,"")
+
         except IOError:
             print "File not found."
         return self._lstContent

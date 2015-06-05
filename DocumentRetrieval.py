@@ -12,12 +12,12 @@ def displayOption():
         if userOption == enums._DisplayOption._Search:
             searchText = raw_input("Enter search words: ")
             searchForWord(searchText)
-            displayOption()
+            return displayOption()
 
         elif userOption == enums._DisplayOption._Read:            
             lstDocuments = getDocument()
             if lstDocuments:
-                print "\nDocument number: 1 - {0}".format(len(lstDocuments))
+                print "\nDocument number: 1 - {0}".format(len(lstDocuments) - 1)
                 documentNumber = int(raw_input("\nEnter document number: "))
                 try:
                     if documentNumber <= 0 or documentNumber > len(lstDocuments):
@@ -26,11 +26,11 @@ def displayOption():
                     print("""\nDocument #{0}
     ---------------------------\n{1}\n
     ---------------------------\n""".format(documentNumber
-                                    , lstDocuments[documentNumber - 1]))
+                                    , lstDocuments[documentNumber]))
                 except IndexError:                
                     print "\nDocument number does not exists.\n"
                 finally:
-                    displayOption()
+                    return displayOption()
 
         elif userOption == enums._DisplayOption._Quit:
             try:
@@ -40,7 +40,7 @@ def displayOption():
 
     except ValueError:
         print "Please select the correct option.\n"
-        displayOption()
+        return displayOption()
 
 def getDocument():
     return DocumentSearch().readFile()
@@ -48,8 +48,11 @@ def getDocument():
 def searchForWord(searchText):
     lstSearchText = searchText.split(" ")
     lstTextInDocument = DocumentSearch().search(lstSearchText)
-    lstTextInDocument.insert(0, "")
-    print("Documents fitting search: {0}\n".format(lstTextInDocument))
+
+    if lstTextInDocument:
+        print("\nDocuments fitting search: {0}\n".format(str(lstTextInDocument).lstrip("[").rstrip("]")))
+    else:        
+        print("\nDocuments fitting search: None\n")
 
 def main():
     displayOption()

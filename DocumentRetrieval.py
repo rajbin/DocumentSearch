@@ -1,6 +1,7 @@
 from DocumentSearch import DocumentSearch
 from enums import enums
 
+# Options displayed to the user for their input
 def displayOption():
     print("""What would you like to do?
             1. Search for documents
@@ -42,9 +43,11 @@ def displayOption():
         print "Please select the correct option.\n"
         return displayOption()
 
+# Get all the documents from the file
 def getDocument():
     return DocumentSearch().readFile()
 
+# Search for user entered words and list the document no. in which it was found
 def searchForWord(searchText):
     lstSearchText = searchText.split(" ")
     lstTextInDocument = DocumentSearch().search(lstSearchText)
